@@ -11,6 +11,7 @@ pipeline {
         INSTANA_ENDPOINT_PORT = '443'
         INSTANA_ZONE = 'robot-shop-zone'
         ANSIBLE_HOST_KEY_CHECKING = 'False'
+        VM_PASSWORD = 'pwd@FYRE1234567'
     }
     
     parameters {
@@ -54,9 +55,21 @@ pipeline {
             steps {
                 echo 'Stopping load testing and Robot Shop...'
                 sh '''
-                    ansible vm -i inventory.ini -m shell -a "cd /opt/robot-shop && docker-compose -f docker-compose-load.yaml down" || echo "Load generator not running"
-                    ansible vm -i inventory.ini -m shell -a "cd /opt/robot-shop && docker-compose down" || echo "Robot Shop not running"
-                '''
+                    expect << 'EOF'
+                    spawn ssh -o StrictHostKeyChecking=no root@${TF_VAR_existing_vm_ip} "cd /opt/robot-shop && docker-compose -f docker-compose-load.yaml down"
+                    expect {
+                        "password:" { send "${VM_PASSWORD}\r"; exp_continue }
+                        eof
+                    }
+EOF
+                    expect << 'EOF'
+                    spawn ssh -o StrictHostKeyChecking=no root@${TF_VAR_existing_vm_ip} "cd /opt/robot-shop && docker-compose down"
+                    expect {
+                        "password:" { send "${VM_PASSWORD}\r"; exp_continue }
+                        eof
+                    }
+EOF
+                ''' || echo "Services not running"
             }
         }
 
@@ -106,15 +119,23 @@ pipeline {
                     try {
                         sh '''
                             echo "Testing SSH connection to ${TF_VAR_existing_vm_ip}..."
-                            ansible vm -i inventory.ini -m ping
+                            expect << 'EOF'
+                            spawn ssh -o StrictHostKeyChecking=no root@${TF_VAR_existing_vm_ip} "echo 'SSH OK'"
+                            expect {
+                                "password:" { send "${VM_PASSWORD}\r"; exp_continue }
+                                "SSH OK" { exit 0 }
+                                eof
+                            }
+EOF
                             
-                            echo "Running Ansible playbook..."
-                            ansible-playbook -i inventory.ini playbook.yml \
+                            echo "Running Ansible playbook with password..."
+                            /usr/local/bin/ansible-playbook -i inventory.ini playbook.yml \
                                 -e "instana_agent_key=${INSTANA_AGENT_KEY}" \
                                 -e "instana_api_token=${INSTANA_API_TOKEN}" \
                                 -e "instana_endpoint_host=${INSTANA_ENDPOINT_HOST}" \
                                 -e "instana_endpoint_port=${INSTANA_ENDPOINT_PORT}" \
                                 -e "instana_zone=${INSTANA_ZONE}" \
+                                -e "ansible_password=${VM_PASSWORD}" \
                                 -v
                         '''
                     } catch (Exception e) {
@@ -130,8 +151,14 @@ pipeline {
             steps {
                 sh '''
                     echo "Deploying load testing..."
-                    ansible vm -i inventory.ini -m shell -a "cd /opt/robot-shop && curl -sO https://raw.githubusercontent.com/instana/robot-shop/master/docker-compose-load.yaml && REPO=robotshop TAG=latest docker-compose -f docker-compose.yml -f docker-compose-load.yaml up -d" || echo "Load testing deployment failed"
-                '''
+                    expect << 'EOF'
+                    spawn ssh -o StrictHostKeyChecking=no root@${TF_VAR_existing_vm_ip} "cd /opt/robot-shop && curl -sO https://raw.githubusercontent.com/instana/robot-shop/master/docker-compose-load.yaml && REPO=robotshop TAG=latest docker-compose -f docker-compose.yml -f docker-compose-load.yaml up -d"
+                    expect {
+                        "password:" { send "${VM_PASSWORD}\r"; exp_continue }
+                        eof
+                    }
+EOF
+                ''' || echo "Load testing deployment failed"
             }
         }
     }
