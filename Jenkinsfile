@@ -54,10 +54,11 @@ pipeline {
             steps {
                 echo 'Stopping load testing and Robot Shop...'
                 sh '''
-                    ssh -o StrictHostKeyChecking=no root@${TF_VAR_existing_vm_ip} \
+                    export SSHPASS='pwd@FYRE1234567'
+                    sshpass -e ssh -o StrictHostKeyChecking=no root@${TF_VAR_existing_vm_ip} \
                         "cd /opt/robot-shop && docker-compose -f docker-compose-load.yaml down" || echo "Load generator not running"
                     
-                    ssh -o StrictHostKeyChecking=no root@${TF_VAR_existing_vm_ip} \
+                    sshpass -e ssh -o StrictHostKeyChecking=no root@${TF_VAR_existing_vm_ip} \
                         "cd /opt/robot-shop && docker-compose down" || echo "Robot Shop not running"
                 '''
             }
@@ -110,7 +111,8 @@ pipeline {
                         // Use sshpass for password authentication
                         sh '''
                             echo "Testing SSH connection to ${TF_VAR_existing_vm_ip}..."
-                            sshpass -p 'pwd@FYRE1234567' ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 root@${TF_VAR_existing_vm_ip} "echo 'SSH OK'"
+                            export SSHPASS='pwd@FYRE1234567'
+                            sshpass -e ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 root@${TF_VAR_existing_vm_ip} "echo 'SSH OK'"
                             
                             echo "Running Ansible playbook..."
                             ansible-playbook -i inventory.ini playbook.yml \
@@ -134,7 +136,8 @@ pipeline {
             steps {
                 sh '''
                     echo "Deploying load testing..."
-                    ssh -o StrictHostKeyChecking=no root@${TF_VAR_existing_vm_ip} \
+                    export SSHPASS='pwd@FYRE1234567'
+                    sshpass -e ssh -o StrictHostKeyChecking=no root@${TF_VAR_existing_vm_ip} \
                     "cd /opt/robot-shop && curl -sO https://raw.githubusercontent.com/instana/robot-shop/master/docker-compose-load.yaml && REPO=robotshop TAG=latest docker-compose -f docker-compose.yml -f docker-compose-load.yaml up -d" || echo "Load testing deployment failed"
                 '''
             }
