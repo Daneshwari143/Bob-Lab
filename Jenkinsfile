@@ -53,23 +53,25 @@ pipeline {
         stage('Stop Load Testing') {
             when { expression { params.ACTION == 'destroy' } }
             steps {
-                echo 'Stopping load testing and Robot Shop...'
-                sh '''
-                    expect << 'EOF'
-                    spawn ssh -o StrictHostKeyChecking=no root@${TF_VAR_existing_vm_ip} "cd /opt/robot-shop && docker-compose -f docker-compose-load.yaml down"
-                    expect {
-                        "password:" { send "${VM_PASSWORD}\r"; exp_continue }
-                        eof
-                    }
+                script {
+                    echo 'Stopping load testing and Robot Shop...'
+                    sh '''
+                        expect << 'EOF'
+                        spawn ssh -o StrictHostKeyChecking=no root@${TF_VAR_existing_vm_ip} "cd /opt/robot-shop && docker-compose -f docker-compose-load.yaml down"
+                        expect {
+                            "password:" { send "${VM_PASSWORD}\r"; exp_continue }
+                            eof
+                        }
 EOF
-                    expect << 'EOF'
-                    spawn ssh -o StrictHostKeyChecking=no root@${TF_VAR_existing_vm_ip} "cd /opt/robot-shop && docker-compose down"
-                    expect {
-                        "password:" { send "${VM_PASSWORD}\r"; exp_continue }
-                        eof
-                    }
+                        expect << 'EOF'
+                        spawn ssh -o StrictHostKeyChecking=no root@${TF_VAR_existing_vm_ip} "cd /opt/robot-shop && docker-compose down"
+                        expect {
+                            "password:" { send "${VM_PASSWORD}\r"; exp_continue }
+                            eof
+                        }
 EOF
-                ''' || echo "Services not running"
+                    ''' || echo "Services not running"
+                }
             }
         }
 
@@ -149,16 +151,18 @@ EOF
         stage('Deploy Load Testing') {
             when { expression { params.ACTION == 'deploy' } }
             steps {
-                sh '''
-                    echo "Deploying load testing..."
-                    expect << 'EOF'
-                    spawn ssh -o StrictHostKeyChecking=no root@${TF_VAR_existing_vm_ip} "cd /opt/robot-shop && curl -sO https://raw.githubusercontent.com/instana/robot-shop/master/docker-compose-load.yaml && REPO=robotshop TAG=latest docker-compose -f docker-compose.yml -f docker-compose-load.yaml up -d"
-                    expect {
-                        "password:" { send "${VM_PASSWORD}\r"; exp_continue }
-                        eof
-                    }
+                script {
+                    sh '''
+                        echo "Deploying load testing..."
+                        expect << 'EOF'
+                        spawn ssh -o StrictHostKeyChecking=no root@${TF_VAR_existing_vm_ip} "cd /opt/robot-shop && curl -sO https://raw.githubusercontent.com/instana/robot-shop/master/docker-compose-load.yaml && REPO=robotshop TAG=latest docker-compose -f docker-compose.yml -f docker-compose-load.yaml up -d"
+                        expect {
+                            "password:" { send "${VM_PASSWORD}\r"; exp_continue }
+                            eof
+                        }
 EOF
-                ''' || echo "Load testing deployment failed"
+                    ''' || echo "Load testing deployment failed"
+                }
             }
         }
     }
