@@ -36,15 +36,10 @@ resource "null_resource" "create_application_perspective" {
   provisioner "local-exec" {
     command = <<-EOT
       set -e
-      echo "=========================================="
-      echo "Creating Application Perspective"
-      echo "=========================================="
-      echo "Name: Robot-Shop-Microservices-Daneshwari-2026"
+      echo "Creating Application Perspective: Robot-Shop-Microservices-Daneshwari-2026"
       echo "API Endpoint: https://${var.instana_endpoint}"
-      echo ""
       
-      # Create application perspective using zone filter
-      # This will work immediately as zone is configured in agent, not dependent on data
+      # Create application perspective
       HTTP_CODE=$(curl -X POST "https://${var.instana_endpoint}/api/application-monitoring/settings/application" \
         -H "Authorization: apiToken ${var.instana_api_token}" \
         -H "Content-Type: application/json" \
@@ -56,57 +51,35 @@ resource "null_resource" "create_application_perspective" {
           "label": "Robot-Shop-Microservices-Daneshwari-2026",
           "scope": "INCLUDE_ALL_DOWNSTREAM",
           "boundaryScope": "ALL",
-          "tagFilterExpression": {
-            "type": "TAG_FILTER",
-            "name": "host.zone",
-            "stringValue": "robot-shop-zone",
-            "operator": "EQUALS",
-            "entity": "DESTINATION"
+          "matchSpecification": {
+            "type": "BINARY_OP",
+            "left": {
+              "type": "TAG_FILTER",
+              "key": "service.name",
+              "operator": "CONTAINS",
+              "value": "robot-shop"
+            },
+            "conjunction": "AND",
+            "right": {
+              "type": "TAG_FILTER",
+              "key": "host.name",
+              "operator": "EQUALS",
+              "value": "ubuntu"
+            }
           }
         }')
       
       echo "HTTP Status Code: $HTTP_CODE"
-      echo ""
       echo "Response:"
       cat /tmp/instana_app_response.json 2>/dev/null || echo "No response file"
-      echo ""
       
       if [ "$HTTP_CODE" -ge 200 ] && [ "$HTTP_CODE" -lt 300 ]; then
-        echo "=========================================="
         echo "✓ Application Perspective created successfully!"
-        echo "=========================================="
-        echo ""
-        echo "The Application Perspective will show data once:"
-        echo "1. Instana agent is deployed and running"
-        echo "2. Robot Shop containers are deployed"
-        echo "3. Agent reports metrics to Instana (may take 1-2 minutes)"
-        echo ""
-        echo "View in Instana UI:"
-        echo "https://${var.instana_endpoint} → Applications → Robot-Shop-Microservices-Daneshwari-2026"
       elif [ "$HTTP_CODE" -eq 409 ]; then
-        echo "=========================================="
-        echo "⚠ Application Perspective already exists"
-        echo "=========================================="
-        echo "This is OK - the configuration is already in place"
-      elif [ "$HTTP_CODE" -eq 422 ]; then
-        echo "=========================================="
-        echo "⚠ Validation Error (HTTP 422)"
-        echo "=========================================="
-        echo "This usually means the zone 'robot-shop-zone' doesn't have data yet."
-        echo "The Application Perspective will be created after agent deployment."
-        echo ""
-        echo "To create it manually after deployment:"
-        echo "1. Go to Instana UI → Applications → Create Application"
-        echo "2. Name: Robot-Shop-Microservices-Daneshwari-2026"
-        echo "3. Filter: host.zone EQUALS robot-shop-zone"
+        echo "⚠ Application Perspective already exists (HTTP 409)"
       else
-        echo "=========================================="
-        echo "✗ Failed to create Application Perspective"
-        echo "=========================================="
-        echo "HTTP Status: $HTTP_CODE"
+        echo "✗ Failed to create Application Perspective (HTTP $HTTP_CODE)"
         cat /tmp/instana_app_response.json 2>/dev/null
-        echo ""
-        echo "This is not critical - you can create it manually in Instana UI"
       fi
     EOT
   }
