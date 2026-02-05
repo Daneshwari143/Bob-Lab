@@ -2,6 +2,7 @@ pipeline {
     agent any
     
     environment {
+        PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:${env.PATH}"
         TF_VAR_existing_vm_ip = '9.30.220.114'
         TF_VAR_enable_instana_config = 'true'
         INSTANA_API_TOKEN = credentials('instana-api-token')
