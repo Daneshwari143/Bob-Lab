@@ -55,22 +55,22 @@ pipeline {
             steps {
                 script {
                     echo 'Stopping load testing and Robot Shop...'
-                    sh '''
-                        expect << 'EOF'
+                    sh """
+                        expect << EOF
                         spawn ssh -o StrictHostKeyChecking=no root@${TF_VAR_existing_vm_ip} "cd /opt/robot-shop && docker-compose -f docker-compose-load.yaml down"
                         expect {
-                            "password:" { send "${VM_PASSWORD}\r"; exp_continue }
+                            "password:" { send "${VM_PASSWORD}\\r"; exp_continue }
                             eof
                         }
 EOF
-                        expect << 'EOF'
+                        expect << EOF
                         spawn ssh -o StrictHostKeyChecking=no root@${TF_VAR_existing_vm_ip} "cd /opt/robot-shop && docker-compose down"
                         expect {
-                            "password:" { send "${VM_PASSWORD}\r"; exp_continue }
+                            "password:" { send "${VM_PASSWORD}\\r"; exp_continue }
                             eof
                         }
 EOF
-                    ''' || echo "Services not running"
+                    """ || echo "Services not running"
                 }
             }
         }
@@ -119,27 +119,27 @@ EOF
             steps {
                 script {
                     try {
-                        sh '''
+                        sh """
                             echo "Testing SSH connection to ${TF_VAR_existing_vm_ip}..."
-                            expect << 'EOF'
+                            expect << EOF
                             spawn ssh -o StrictHostKeyChecking=no root@${TF_VAR_existing_vm_ip} "echo 'SSH OK'"
                             expect {
-                                "password:" { send "${VM_PASSWORD}\r"; exp_continue }
+                                "password:" { send "${VM_PASSWORD}\\r"; exp_continue }
                                 "SSH OK" { exit 0 }
                                 eof
                             }
 EOF
                             
                             echo "Running Ansible playbook with password..."
-                            /usr/local/bin/ansible-playbook -i inventory.ini playbook.yml \
-                                -e "instana_agent_key=${INSTANA_AGENT_KEY}" \
-                                -e "instana_api_token=${INSTANA_API_TOKEN}" \
-                                -e "instana_endpoint_host=${INSTANA_ENDPOINT_HOST}" \
-                                -e "instana_endpoint_port=${INSTANA_ENDPOINT_PORT}" \
-                                -e "instana_zone=${INSTANA_ZONE}" \
-                                -e "ansible_password=${VM_PASSWORD}" \
+                            /usr/local/bin/ansible-playbook -i inventory.ini playbook.yml \\
+                                -e "instana_agent_key=${INSTANA_AGENT_KEY}" \\
+                                -e "instana_api_token=${INSTANA_API_TOKEN}" \\
+                                -e "instana_endpoint_host=${INSTANA_ENDPOINT_HOST}" \\
+                                -e "instana_endpoint_port=${INSTANA_ENDPOINT_PORT}" \\
+                                -e "instana_zone=${INSTANA_ZONE}" \\
+                                -e "ansible_password=${VM_PASSWORD}" \\
                                 -v
-                        '''
+                        """
                     } catch (Exception e) {
                         echo "Ansible failed: ${e.message}"
                         throw e
@@ -152,16 +152,16 @@ EOF
             when { expression { params.ACTION == 'deploy' } }
             steps {
                 script {
-                    sh '''
+                    sh """
                         echo "Deploying load testing..."
-                        expect << 'EOF'
+                        expect << EOF
                         spawn ssh -o StrictHostKeyChecking=no root@${TF_VAR_existing_vm_ip} "cd /opt/robot-shop && curl -sO https://raw.githubusercontent.com/instana/robot-shop/master/docker-compose-load.yaml && REPO=robotshop TAG=latest docker-compose -f docker-compose.yml -f docker-compose-load.yaml up -d"
                         expect {
-                            "password:" { send "${VM_PASSWORD}\r"; exp_continue }
+                            "password:" { send "${VM_PASSWORD}\\r"; exp_continue }
                             eof
                         }
 EOF
-                    ''' || echo "Load testing deployment failed"
+                    """ || echo "Load testing deployment failed"
                 }
             }
         }
