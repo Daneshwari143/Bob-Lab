@@ -107,9 +107,10 @@ pipeline {
             steps {
                 script {
                     try {
+                        // Use sshpass for password authentication
                         sh '''
                             echo "Testing SSH connection to ${TF_VAR_existing_vm_ip}..."
-                            ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 root@${TF_VAR_existing_vm_ip} "echo 'SSH OK'"
+                            sshpass -p 'pwd@FYRE1234567' ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 root@${TF_VAR_existing_vm_ip} "echo 'SSH OK'"
                             
                             echo "Running Ansible playbook..."
                             ansible-playbook -i inventory.ini playbook.yml \
