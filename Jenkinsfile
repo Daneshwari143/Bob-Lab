@@ -54,23 +54,27 @@ pipeline {
             when { expression { params.ACTION == 'destroy' } }
             steps {
                 script {
-                    echo 'Stopping load testing and Robot Shop...'
-                    sh """
-                        expect << EOF
-                        spawn ssh -o StrictHostKeyChecking=no root@${TF_VAR_existing_vm_ip} "cd /opt/robot-shop && docker-compose -f docker-compose-load.yaml down"
-                        expect {
-                            "password:" { send "${VM_PASSWORD}\\r"; exp_continue }
-                            eof
-                        }
+                    try {
+                        echo 'Stopping load testing and Robot Shop...'
+                        sh """
+                            expect << EOF
+                            spawn ssh -o StrictHostKeyChecking=no root@${TF_VAR_existing_vm_ip} "cd /opt/robot-shop && docker-compose -f docker-compose-load.yaml down"
+                            expect {
+                                "password:" { send "${VM_PASSWORD}\\r"; exp_continue }
+                                eof
+                            }
 EOF
-                        expect << EOF
-                        spawn ssh -o StrictHostKeyChecking=no root@${TF_VAR_existing_vm_ip} "cd /opt/robot-shop && docker-compose down"
-                        expect {
-                            "password:" { send "${VM_PASSWORD}\\r"; exp_continue }
-                            eof
-                        }
+                            expect << EOF
+                            spawn ssh -o StrictHostKeyChecking=no root@${TF_VAR_existing_vm_ip} "cd /opt/robot-shop && docker-compose down"
+                            expect {
+                                "password:" { send "${VM_PASSWORD}\\r"; exp_continue }
+                                eof
+                            }
 EOF
-                    """ || echo "Services not running"
+                        """
+                    } catch (Exception e) {
+                        echo "Services not running: ${e.message}"
+                    }
                 }
             }
         }
