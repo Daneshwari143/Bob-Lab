@@ -55,7 +55,7 @@ resource "null_resource" "create_application_perspective" {
             "type": "TAG_FILTER",
             "key": "service.name",
             "operator": "CONTAINS",
-            "value": "ubuntu"
+            "value": "robot-shop"
           }
         }')
       
