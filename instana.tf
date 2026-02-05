@@ -346,20 +346,20 @@ resource "instana_alerting_channel" "robot_shop_email" {
 }
 
 # Alert Configuration - Link alerts to channels
-# Filters events only for Robot Shop application
+# Filters events only for Robot Shop application at APPLICATION LEVEL
 resource "instana_alerting_config" "robot_shop" {
   count = var.enable_instana_config ? 1 : 0
 
-  alert_name = "Robot Shop Monitoring Alerts"
+  alert_name = "Robot Shop Application Health Alerts"
   
   integration_ids = var.enable_instana_config ? [
     instana_alerting_channel.robot_shop_email[0].id
   ] : []
 
-  # Filter for Robot Shop application events only
-  event_filter_query = "entity.application.name:\"Robot-Shop-Microservices-Daneshwari-2026\""
+  # Filter for Robot Shop application events only - APPLICATION LEVEL
+  event_filter_query = "entity.application.name:\"Robot-Shop-Microservices-Daneshwari-2026\" AND entity.type:application"
   
-  # Filter for specific event types
+  # Filter for application-level event types
   event_filter_event_types = [
     "incident",
     "critical",
