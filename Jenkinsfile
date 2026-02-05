@@ -114,7 +114,7 @@ EOF
             }
         }
         
-        stage('Ansible - Deploy Robot Shop') {
+        stage('Deploy Robot Shop') {
             when { expression { params.SKIP_ANSIBLE == false && params.ACTION == 'deploy' } }
             steps {
                 script {
@@ -130,18 +130,29 @@ EOF
                             }
 EOF
                             
-                            echo "Running Ansible playbook with password..."
-                            ansible-playbook -i inventory.ini playbook.yml \\
-                                -e "instana_agent_key=${INSTANA_AGENT_KEY}" \\
-                                -e "instana_api_token=${INSTANA_API_TOKEN}" \\
-                                -e "instana_endpoint_host=${INSTANA_ENDPOINT_HOST}" \\
-                                -e "instana_endpoint_port=${INSTANA_ENDPOINT_PORT}" \\
-                                -e "instana_zone=${INSTANA_ZONE}" \\
-                                -e "ansible_password=${VM_PASSWORD}" \\
-                                -v
+                            echo "Copying deployment script to VM..."
+                            expect << EOF
+                            spawn scp -o StrictHostKeyChecking=no deploy_robot_shop.sh root@${TF_VAR_existing_vm_ip}:/tmp/
+                            expect {
+                                "password:" { send "${VM_PASSWORD}\\r"; exp_continue }
+                                eof
+                            }
+EOF
+                            
+                            echo "Deploying Robot Shop on VM..."
+                            expect << EOF
+                            set timeout 600
+                            spawn ssh -o StrictHostKeyChecking=no root@${TF_VAR_existing_vm_ip} "chmod +x /tmp/deploy_robot_shop.sh && /tmp/deploy_robot_shop.sh '${INSTANA_AGENT_KEY}' '${INSTANA_ENDPOINT_HOST}' '${INSTANA_ENDPOINT_PORT}' '${INSTANA_ZONE}'"
+                            expect {
+                                "password:" { send "${VM_PASSWORD}\\r"; exp_continue }
+                                "Deployment Complete" { exit 0 }
+                                timeout { exit 1 }
+                                eof
+                            }
+EOF
                         """
                     } catch (Exception e) {
-                        echo "Ansible failed: ${e.message}"
+                        echo "Deployment failed: ${e.message}"
                         throw e
                     }
                 }
