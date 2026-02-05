@@ -1,0 +1,270 @@
+<mxfile host="app.diagrams.net" modified="2026-02-03T08:37:00.000Z" agent="5.0" version="24.0.0" etag="draw.io" type="device">
+  <diagram name="Robot Shop Architecture" id="robot-shop-arch">
+    <mxGraphModel dx="1422" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- Title -->
+        <mxCell id="title" value="Robot Shop Microservices Architecture with Instana Monitoring" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=24;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="400" y="20" width="800" height="40" as="geometry" />
+        </mxCell>
+        
+        <!-- Jenkins CI/CD Pipeline -->
+        <mxCell id="jenkins-container" value="Jenkins CI/CD Pipeline" style="swimlane;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="40" y="80" width="320" height="280" as="geometry" />
+        </mxCell>
+        <mxCell id="jenkins-checkout" value="1. Checkout Code" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="jenkins-container">
+          <mxGeometry x="20" y="40" width="280" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="jenkins-validate" value="2. Validate Terraform" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="jenkins-container">
+          <mxGeometry x="20" y="80" width="280" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="jenkins-terraform" value="3. Terraform Init/Plan/Apply" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="jenkins-container">
+          <mxGeometry x="20" y="120" width="280" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="jenkins-ansible" value="4. Run Ansible Playbook" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="jenkins-container">
+          <mxGeometry x="20" y="160" width="280" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="jenkins-verify" value="5. Verify Deployment" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="jenkins-container">
+          <mxGeometry x="20" y="200" width="280" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="jenkins-instana" value="6. Verify Instana Monitoring" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="jenkins-container">
+          <mxGeometry x="20" y="240" width="280" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Instana Monitoring Platform -->
+        <mxCell id="instana-container" value="Instana Monitoring Platform" style="swimlane;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=14;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="1240" y="80" width="320" height="480" as="geometry" />
+        </mxCell>
+        <mxCell id="instana-endpoint" value="Endpoint:&#xa;ibmdevsandbox-instanaibm.instana.io" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;align=center;" vertex="1" parent="instana-container">
+          <mxGeometry x="20" y="40" width="280" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="instana-app" value="Application Perspective:&#xa;Robot-Shop-Microservices-Daneshwari-2026" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;align=center;" vertex="1" parent="instana-container">
+          <mxGeometry x="20" y="100" width="280" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="instana-alerts-title" value="Custom Alert Events (5):" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12;fontStyle=1" vertex="1" parent="instana-container">
+          <mxGeometry x="20" y="160" width="280" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="instana-alert1" value="• High Error Rate (>5%)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;align=left;" vertex="1" parent="instana-container">
+          <mxGeometry x="20" y="185" width="280" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="instana-alert2" value="• High Response Time (>1000ms)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;align=left;" vertex="1" parent="instana-container">
+          <mxGeometry x="20" y="220" width="280" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="instana-alert3" value="• Service Down" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;align=left;" vertex="1" parent="instana-container">
+          <mxGeometry x="20" y="255" width="280" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="instana-alert4" value="• Container Failure" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;align=left;" vertex="1" parent="instana-container">
+          <mxGeometry x="20" y="290" width="280" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="instana-alert5" value="• High Memory Usage (>90%)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;align=left;" vertex="1" parent="instana-container">
+          <mxGeometry x="20" y="325" width="280" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="instana-channel" value="Alert Channel:&#xa;Email → Daneshwari.Naganur1@ibm.com" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;align=center;" vertex="1" parent="instana-container">
+          <mxGeometry x="20" y="370" width="280" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="instana-agent" value="Instana Agent&#xa;(Installed on VM)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;align=center;" vertex="1" parent="instana-container">
+          <mxGeometry x="20" y="430" width="280" height="40" as="geometry" />
+        </mxCell>
+        
+        <!-- VM Infrastructure -->
+        <mxCell id="vm-container" value="VM Infrastructure (9.30.213.70 - obscode1)" style="swimlane;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=14;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="400" y="80" width="800" height="480" as="geometry" />
+        </mxCell>
+        <mxCell id="vm-info" value="Ubuntu 22.04 LTS | Docker 24.0.7 | Docker Compose v2.24.0" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;align=center;fontStyle=2" vertex="1" parent="vm-container">
+          <mxGeometry x="20" y="40" width="760" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Frontend Services -->
+        <mxCell id="frontend-group" value="Frontend" style="swimlane;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;fontStyle=1" vertex="1" parent="vm-container">
+          <mxGeometry x="20" y="90" width="180" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="web-service" value="web:8080&#xa;(nginx + Angular)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="frontend-group">
+          <mxGeometry x="10" y="30" width="160" height="60" as="geometry" />
+        </mxCell>
+        
+        <!-- Business Logic Services -->
+        <mxCell id="business-group" value="Business Logic Services" style="swimlane;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;fontStyle=1" vertex="1" parent="vm-container">
+          <mxGeometry x="220" y="90" width="360" height="280" as="geometry" />
+        </mxCell>
+        <mxCell id="cart-service" value="cart:8080&#xa;(Node.js)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="business-group">
+          <mxGeometry x="10" y="30" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="catalogue-service" value="catalogue:8080&#xa;(Node.js)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="business-group">
+          <mxGeometry x="130" y="30" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="user-service" value="user:8080&#xa;(Node.js)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="business-group">
+          <mxGeometry x="250" y="30" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="payment-service" value="payment:8080&#xa;(Python)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="business-group">
+          <mxGeometry x="10" y="100" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="shipping-service" value="shipping:8080&#xa;(Java)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="business-group">
+          <mxGeometry x="130" y="100" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="dispatch-service" value="dispatch:8080&#xa;(Go)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="business-group">
+          <mxGeometry x="250" y="100" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="ratings-service" value="ratings:8080&#xa;(PHP)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="business-group">
+          <mxGeometry x="130" y="170" width="100" height="50" as="geometry" />
+        </mxCell>
+        
+        <!-- Data Stores -->
+        <mxCell id="datastore-group" value="Data Stores" style="swimlane;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12;fontStyle=1" vertex="1" parent="vm-container">
+          <mxGeometry x="600" y="90" width="180" height="280" as="geometry" />
+        </mxCell>
+        <mxCell id="mysql-service" value="mysql:3306&#xa;(MySQL 5.7)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="datastore-group">
+          <mxGeometry x="10" y="30" width="160" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="mongodb-service" value="mongodb:27017&#xa;(MongoDB 4)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="datastore-group">
+          <mxGeometry x="10" y="95" width="160" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="redis-service" value="redis:6379&#xa;(Redis 6)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="datastore-group">
+          <mxGeometry x="10" y="160" width="160" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="rabbitmq-service" value="rabbitmq:5672&#xa;(RabbitMQ 3.8)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="datastore-group">
+          <mxGeometry x="10" y="225" width="160" height="50" as="geometry" />
+        </mxCell>
+        
+        <!-- Network Info -->
+        <mxCell id="network-info" value="Network: Private IP (9.30.x.x) | VPN Required | Port 8080 (Web UI)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;align=center;fontStyle=2" vertex="1" parent="vm-container">
+          <mxGeometry x="20" y="390" width="760" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="container-count" value="Total: 12 Docker Containers | 8 Microservices + 4 Data Stores" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;align=center;fontStyle=1" vertex="1" parent="vm-container">
+          <mxGeometry x="20" y="430" width="760" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Data Flow Diagram -->
+        <mxCell id="dataflow-title" value="Data Flow" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="40" y="600" width="200" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="user-icon" value="User" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="100" y="650" width="40" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="web-flow" value="Web UI&#xa;(Port 8080)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="200" y="665" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="api-flow" value="API Gateway&#xa;(cart/catalogue/user)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="360" y="665" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="backend-flow" value="Backend Services&#xa;(payment/shipping/dispatch)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="560" y="665" width="160" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="data-flow" value="Data Stores&#xa;(MySQL/MongoDB/Redis)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="780" y="665" width="160" height="50" as="geometry" />
+        </mxCell>
+        
+        <!-- Monitoring Flow -->
+        <mxCell id="monitoring-title" value="Monitoring Flow" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="40" y="780" width="200" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="containers-mon" value="12 Containers" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="100" y="830" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="agent-mon" value="Instana Agent" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="280" y="830" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="platform-mon" value="Instana Platform" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="460" y="830" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="alerts-mon" value="Alert Events" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="660" y="830" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="email-mon" value="Email Notification" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="840" y="830" width="140" height="50" as="geometry" />
+        </mxCell>
+        
+        <!-- Technology Stack -->
+        <mxCell id="tech-title" value="Technology Stack" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="1040" y="600" width="200" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="tech-infra" value="Infrastructure:&#xa;• Terraform (IaC)&#xa;• Ansible (Config Mgmt)&#xa;• Jenkins (CI/CD)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;align=left;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="650" width="240" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="tech-container" value="Containerization:&#xa;• Docker 24.0.7&#xa;• Docker Compose v2.24.0" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;align=left;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="750" width="240" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="tech-monitor" value="Monitoring:&#xa;• Instana APM&#xa;• Custom Alerts&#xa;• Email Notifications" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;align=left;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="840" width="240" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="tech-languages" value="Languages:&#xa;• Node.js, Python, Java&#xa;• Go, PHP, Angular" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;align=left;" vertex="1" parent="1">
+          <mxGeometry x="1320" y="650" width="240" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="tech-data" value="Data Stores:&#xa;• MySQL 5.7&#xa;• MongoDB 4&#xa;• Redis 6&#xa;• RabbitMQ 3.8" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;align=left;" vertex="1" parent="1">
+          <mxGeometry x="1320" y="740" width="240" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="tech-network" value="Network:&#xa;• Private IP: 9.30.213.70&#xa;• VPN Required&#xa;• Web Port: 8080" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;align=left;" vertex="1" parent="1">
+          <mxGeometry x="1320" y="860" width="240" height="80" as="geometry" />
+        </mxCell>
+        
+        <!-- Deployment Summary -->
+        <mxCell id="summary-title" value="Deployment Summary" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="40" y="960" width="1520" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="summary-box" value="• VM: 9.30.213.70 (obscode1) - Ubuntu 22.04 LTS&#xa;• Containers: 12 (8 microservices + 4 data stores)&#xa;• Monitoring: Instana with 5 custom alerts&#xa;• Access: VPN required for private network&#xa;• Web UI: http://9.30.213.70:8080&#xa;• Deployment: Automated via Jenkins → Terraform → Ansible" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;align=left;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="40" y="1000" width="1520" height="120" as="geometry" />
+        </mxCell>
+        
+        <!-- Arrows for Data Flow -->
+        <mxCell id="arrow1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=2;fillColor=#d5e8d4;strokeColor=#82b366;" edge="1" parent="1" source="user-icon" target="web-flow">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;" edge="1" parent="1" source="web-flow" target="api-flow">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;" edge="1" parent="1" source="api-flow" target="backend-flow">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=2;fillColor=#f8cecc;strokeColor=#b85450;" edge="1" parent="1" source="backend-flow" target="data-flow">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <!-- Arrows for Monitoring Flow -->
+        <mxCell id="arrow5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=2;fillColor=#ffe6cc;strokeColor=#d79b00;" edge="1" parent="1" source="containers-mon" target="agent-mon">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=2;fillColor=#fff2cc;strokeColor=#d6b656;" edge="1" parent="1" source="agent-mon" target="platform-mon">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=2;fillColor=#f8cecc;strokeColor=#b85450;" edge="1" parent="1" source="platform-mon" target="alerts-mon">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=2;fillColor=#e1d5e7;strokeColor=#9673a6;" edge="1" parent="1" source="alerts-mon" target="email-mon">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <!-- Arrows from Jenkins to VM -->
+        <mxCell id="arrow9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=3;fillColor=#d5e8d4;strokeColor=#82b366;dashed=1;" edge="1" parent="1" source="jenkins-terraform" target="vm-container">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="360" y="235" as="sourcePoint" />
+            <mxPoint x="400" y="280" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;strokeWidth=3;fillColor=#dae8fc;strokeColor=#6c8ebf;dashed=1;" edge="1" parent="1" source="jenkins-ansible" target="vm-container">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="360" y="275" as="sourcePoint" />
+            <mxPoint x="400" y="440" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Arrows from VM to Instana -->
+        <mxCell id="arrow11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=3;fillColor=#fff2cc;strokeColor=#d6b656;dashed=1;" edge="1" parent="1" source="vm-container" target="instana-container">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1200" y="320" as="sourcePoint" />
+            <mxPoint x="1240" y="320" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Legend -->
+        <mxCell id="legend-title" value="Legend" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="40" y="1150" width="100" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-box" value="Frontend Services | Business Logic | Data Stores | Monitoring | Infrastructure" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;align=left;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="40" y="1175" width="1520" height="25" as="geometry" />
+        </mxCell>
+        
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

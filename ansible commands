@@ -1,0 +1,50 @@
+
+
+
+#9.30.118.87
+#[2:28 PM]root/pwd@FYRE1234567
+
+
+# Deploy Robot Shop and Instana agent
+ansible-playbook -i inventory.ini playbook.yml
+
+ssh root@9.30.118.87
+docker ps
+
+ # Step 1: Navigate to Robot Shop Directory
+cd /opt/robot-shop
+
+# Step 2: Verify Files Exist
+ls -la
+docker-compose ps
+
+# Step 4: If Containers Not Running, Start Them
+docker-compose up -d
+
+
+
+   # Start Robot Shop with load generator (requires environment variables)
+REPO=robotshop TAG=latest docker-compose -f docker-compose.yml -f docker-compose-load.yaml up -d
+
+   # Or start without load generator
+docker-compose up -d
+
+
+# check container in termina;
+ansible vm -m shell -a "docker ps"
+
+# 1. Navigate to directory
+cd /opt/robot-shop
+
+# 2. Check status
+docker-compose ps
+
+# 3. If not running, start
+docker-compose up -d
+
+# 4. Wait 30 seconds for services to start
+sleep 30
+
+# 5. Test Robot Shop is accessible
+curl -I http://9.30.118.87:8080/
+

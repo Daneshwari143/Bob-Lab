@@ -1,0 +1,16 @@
+# Copy this file to terraform.tfvars and update with your values
+
+
+# Instana Agent Configuration
+# Get these values from your Instana account
+instana_agent_key      = "uBp4GXpZQpKrHxMXNcvInQ"
+instana_endpoint_host  = "ingress-orange-saas.instana.io"  # Or your Instana backend host
+instana_endpoint_port  = "443"
+instana_zone           = "robot-shop-zone"
+
+# Instana Terraform Provider Configuration
+# API token for managing Instana resources (application perspectives, alerts, RBAC)
+# Get from: Instana UI -> Settings -> Team Settings -> API Tokens
+instana_api_token      = "lDKVCHodR7O1UObsi2FRAA" 
+instana_endpoint       = "https://ibmdevsandbox-instanaibm.instana.io"  # Your Instana API endpoint
+enable_instana_config  = true  # Set to false to skip Instana resource configuration
