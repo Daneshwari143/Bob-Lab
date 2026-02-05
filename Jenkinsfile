@@ -131,7 +131,7 @@ EOF
 EOF
                             
                             echo "Running Ansible playbook with password..."
-                            /usr/local/bin/ansible-playbook -i inventory.ini playbook.yml \\
+                            ansible-playbook -i inventory.ini playbook.yml \\
                                 -e "instana_agent_key=${INSTANA_AGENT_KEY}" \\
                                 -e "instana_api_token=${INSTANA_API_TOKEN}" \\
                                 -e "instana_endpoint_host=${INSTANA_ENDPOINT_HOST}" \\
