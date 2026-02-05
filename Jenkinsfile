@@ -163,16 +163,20 @@ EOF
             when { expression { params.ACTION == 'deploy' } }
             steps {
                 script {
-                    sh """
-                        echo "Deploying load testing..."
-                        expect << EOF
-                        spawn ssh -o StrictHostKeyChecking=no root@${TF_VAR_existing_vm_ip} "cd /opt/robot-shop && curl -sO https://raw.githubusercontent.com/instana/robot-shop/master/docker-compose-load.yaml && REPO=robotshop TAG=latest docker-compose -f docker-compose.yml -f docker-compose-load.yaml up -d"
-                        expect {
-                            "password:" { send "${VM_PASSWORD}\\r"; exp_continue }
-                            eof
-                        }
+                    try {
+                        sh """
+                            echo "Deploying load testing..."
+                            expect << EOF
+                            spawn ssh -o StrictHostKeyChecking=no root@${TF_VAR_existing_vm_ip} "cd /opt/robot-shop && curl -sO https://raw.githubusercontent.com/instana/robot-shop/master/docker-compose-load.yaml && REPO=robotshop TAG=latest docker-compose -f docker-compose.yml -f docker-compose-load.yaml up -d"
+                            expect {
+                                "password:" { send "${VM_PASSWORD}\\r"; exp_continue }
+                                eof
+                            }
 EOF
-                    """ || echo "Load testing deployment failed"
+                        """
+                    } catch (Exception e) {
+                        echo "Load testing deployment failed: ${e.message}"
+                    }
                 }
             }
         }
