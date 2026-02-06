@@ -356,7 +356,7 @@ resource "instana_alerting_channel" "robot_shop_email" {
 }
 
 # Alert Configuration - Link alerts to channels
-# Filters events ONLY for Robot Shop application on ubuntu hostname
+# Filters events for Robot Shop services and containers on ubuntu hostname
 resource "instana_alerting_config" "robot_shop" {
   count = var.enable_instana_config ? 1 : 0
 
@@ -366,14 +366,16 @@ resource "instana_alerting_config" "robot_shop" {
     instana_alerting_channel.robot_shop_email[0].id
   ] : []
 
-  # Filter for Robot Shop application on ubuntu hostname ONLY - excludes Kubernetes hosts
-  event_filter_query = "entity.application.name:\"Robot-Shop-Microservices-Daneshwari-2026\" AND entity.type:application AND entity.host.name:\"ubuntu\" AND entity.zone:\"robot-shop-zone\""
+  # Filter for Robot Shop services and containers on ubuntu hostname
+  # Matches custom events that target services and dockerContainers
+  event_filter_query = "entity.application.name:\"Robot-Shop-Microservices-Daneshwari-2026\" AND entity.zone:\"robot-shop-zone\""
   
-  # Filter for application-level event types
+  # Filter for all event types including custom events
   event_filter_event_types = [
     "incident",
     "critical",
-    "warning"
+    "warning",
+    "change"
   ]
 }
 
