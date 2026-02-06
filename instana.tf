@@ -54,8 +54,9 @@ resource "null_resource" "create_application_perspective" {
           "matchSpecification": {
             "type": "TAG_FILTER",
             "key": "agent.tag",
+            "tag_key": "appname",
             "operator": "EQUALS",
-            "value": "appname:robot-shop-oas"
+            "value": "robot-shop-oas"
           }
         }')
       
