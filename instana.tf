@@ -98,7 +98,7 @@ resource "null_resource" "create_high_error_rate_event" {
         -d '{
           "name": "Robot Shop - High Error Rate",
           "description": "Alert when error rate exceeds 5% in Robot Shop services",
-          "query": "entity.application.name:\"Robot-Shop-Microservices-Daneshwari-2026\" AND entity.type:service AND entity.zone:robot-shop-zone",
+          "query": "entity.application.name:\"Robot-Shop-Microservices-Daneshwari-2026\",
           "enabled": true,
           "triggering": true,
           "entityType": "service",
@@ -143,7 +143,7 @@ resource "null_resource" "create_high_latency_event" {
         -d '{
           "name": "Robot Shop - High Response Time",
           "description": "Alert when response time exceeds 1000ms in Robot Shop services",
-          "query": "entity.application.name:\"Robot-Shop-Microservices-Daneshwari-2026\" AND entity.type:service AND entity.zone:robot-shop-zone",
+          "query": "entity.application.name:\"Robot-Shop-Microservices-Daneshwari-2026\",
           "enabled": true,
           "triggering": true,
           "entityType": "service",
@@ -188,7 +188,7 @@ resource "null_resource" "create_service_down_event" {
         -d '{
           "name": "Robot Shop - Service Down",
           "description": "Alert when Robot Shop service becomes unavailable",
-          "query": "entity.application.name:\"Robot-Shop-Microservices-Daneshwari-2026\" AND entity.type:service AND entity.zone:robot-shop-zone",
+          "query": "entity.application.name:\"Robot-Shop-Microservices-Daneshwari-2026\",
           "enabled": true,
           "triggering": true,
           "entityType": "service",
@@ -233,7 +233,7 @@ resource "null_resource" "create_container_failure_event" {
         -d '{
           "name": "Robot Shop - Container Failure",
           "description": "Alert when Robot Shop container stops or crashes",
-          "query": "entity.application.name:\"Robot-Shop-Microservices-Daneshwari-2026\" AND entity.type:dockerContainer AND entity.zone:robot-shop-zone",
+          "query": "entity.application.name:\"Robot-Shop-Microservices-Daneshwari-2026\",
           "enabled": true,
           "triggering": true,
           "entityType": "dockerContainer",
@@ -278,7 +278,7 @@ resource "null_resource" "create_high_memory_event" {
         -d '{
           "name": "Robot Shop - High Memory Usage",
           "description": "Alert when memory usage exceeds 90% for Robot Shop containers",
-          "query": "entity.application.name:\"Robot-Shop-Microservices-Daneshwari-2026\" AND entity.type:dockerContainer AND entity.zone:robot-shop-zone",
+          "query": "entity.application.name:\"Robot-Shop-Microservices-Daneshwari-2026\",
           "enabled": true,
           "triggering": true,
           "entityType": "dockerContainer",
