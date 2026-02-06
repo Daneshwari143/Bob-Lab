@@ -52,20 +52,10 @@ resource "null_resource" "create_application_perspective" {
           "scope": "INCLUDE_ALL_DOWNSTREAM",
           "boundaryScope": "ALL",
           "matchSpecification": {
-            "type": "BINARY_OP",
-            "left": {
-              "type": "TAG_FILTER",
-              "key": "service.name",
-              "operator": "CONTAINS",
-              "value": "robot-shop"
-            },
-            "conjunction": "AND",
-            "right": {
-              "type": "TAG_FILTER",
-              "key": "host.name",
-              "operator": "EQUALS",
-              "value": "ubuntu"
-            }
+            "type": "TAG_FILTER",
+            "key": "agent.tag",
+            "operator": "EQUALS",
+            "value": "appname:robot-shop-oas"
           }
         }')
       
