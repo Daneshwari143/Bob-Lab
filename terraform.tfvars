@@ -16,6 +16,6 @@ instana_zone           = "robot-shop-zone"
 # Instana Terraform Provider Configuration
 # API token for managing Instana resources (application perspectives, alerts, RBAC)
 # Get from: Instana UI -> Settings -> Team Settings -> API Tokens
-instana_api_token      = "-M4zm_2RQpOIMgQvU3dj8A"
+instana_api_token      = ""
 instana_endpoint       = "ibmdevsandbox-instanaibm.instana.io"  # Your Instana API endpoint (hostname only, no https://)
 enable_instana_config  = true  # Set to false to skip Instana resource configuration
