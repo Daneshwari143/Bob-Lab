@@ -53,10 +53,9 @@ resource "null_resource" "create_application_perspective" {
           "boundaryScope": "ALL",
           "matchSpecification": {
             "type": "TAG_FILTER",
-            "key": "agent.tag",
-            "tag_key": "appname",
+            "key": "entity.tag",
             "operator": "EQUALS",
-            "value": "robot-shop-oas"
+            "value": "appname:robot-shop-oas"
           }
         }')
       
